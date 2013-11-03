@@ -8,7 +8,7 @@ struct list {
 
 struct list *temp = NULL;
 
-void create_recursive(struct list *);
+void create_recursive(struct list **);
 void display(struct list *);
 void create_circular_list(struct list *);
 void display_circular(struct list *);

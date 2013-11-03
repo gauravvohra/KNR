@@ -1,0 +1,18 @@
+Enter the operation you want to perform. 
+ 		1. Create Linked List recursively. 
+ 		2. Display Linked List. 
+ 		3. Create Circular List. 
+ 		4. Display Circular List. 
+ 		5. Recursive Reverse 
+ 		0. Exit. 
+1
+Enter the first element 
+1
+ Do you want to create more nodes (Y/N) 
+y
+Creating more node 
+lhead 136105992 lhead->data 1 
+Enter the element 
+2
+lhead 136105992 lhead->data 2 
+lhead 136106008 lhead->data 0 
