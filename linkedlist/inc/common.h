@@ -6,10 +6,10 @@ struct list {
     int data;
 };
 
-struct list *temp = NULL;
 
 void create_recursive(struct list **);
 void display(struct list *);
+void reverse(struct list **);
 void create_circular_list(struct list *);
 void display_circular(struct list *);
 void reverse_recursive(struct list *);

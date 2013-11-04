@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+struct list *temp = NULL;
+
 int main()
 {
     struct list *start = NULL, *head = NULL;
@@ -13,9 +15,10 @@ int main()
         printf("Enter the operation you want to perform. \n \ 
 		1. Create Linked List recursively. \n \
 		2. Display Linked List. \n \
-		3. Create Circular List. \n \
-		4. Display Circular List. \n \
-		5. Recursive Reverse \n \
+		3. Reverse List. \n \
+		4. Create Circular List. \n \
+		5. Display Circular List. \n \
+		6. Recursive Reverse \n \
 		0. Exit. \n");
 
         scanf("%d", &choice);
@@ -28,12 +31,15 @@ int main()
             display(start);
             break;
         case 3:
-            create_circular_list(start);
+            reverse(&start);
             break;
         case 4:
-            display_circular(head);
+            create_circular_list(start);
             break;
         case 5:
+            display_circular(head);
+            break;
+        case 6:
             reverse_recursive(start);
             display(temp);
             break;
@@ -45,10 +51,12 @@ int main()
     return 0;
 }
 
+// Function Creates a Linked List Recursively Using Double Pointers Approach
+
 void create_recursive(struct list **lhead)
 {
     char choice;
-    static struct list *fhead = NULL ;
+    static struct list *fhead;
 
     if (!(*lhead)) {
         *lhead = malloc(sizeof(struct list *));
@@ -56,7 +64,9 @@ void create_recursive(struct list **lhead)
         scanf("%d", &((*lhead)->data));
         printf(" Do you want to create more nodes (Y/N) \n");
         scanf("\n%c", &choice);
-	fhead = *lhead ;
+        fhead = *lhead;
+        printf("fhead %u fhead->data %d \n", fhead, fhead->data);
+        printf("lhead %u lhead->data %d \n", *lhead, (*lhead)->data);
         if (choice == 'Y' || choice == 'y') {
             create_recursive(lhead);
         } else if (choice == 'N' || choice == 'n') {
@@ -68,26 +78,50 @@ void create_recursive(struct list **lhead)
         *lhead = (*lhead)->next;
         printf("Enter the element \n");
         scanf("%d", &((*lhead)->data));
+
+        printf("fhead %u fhead->data %d \n", fhead, fhead->data);
         printf(" Do you want to create more nodes (Y/N) \n");
         scanf("\n%c", &choice);
         if (choice == 'Y' || choice == 'y') {
             create_recursive(lhead);
         } else if (choice == 'N' || choice == 'n') {
-            	(*lhead)->next = NULL;
+            (*lhead)->next = NULL;
+            *lhead = fhead;
+            printf("fhead %u fhead->data %d \n", fhead, fhead->data);
+            printf("lhead %u lhead->data %d \n", *lhead, (*lhead)->data);
         }
     }
-	*lhead = fhead ;
+
 }
 
-void display(struct list *lhead)
+// Function Displays the Linked List. 
+// Single Pointer have been passed as parameters since We dont want to change the Start of List
+
+void display(struct list *lstart)
 {
     printf(" Printing the linked list \n");
-    while (lhead != NULL) {
-    	printf("lhead %u lhead->data %d \n", lhead, lhead->data);
-        lhead = lhead->next;
+    while (lstart != NULL) {
+        printf("lhead %u lhead->data %d \n", lstart, lstart->data);
+        lstart = lstart->next;
     }
 }
 
+// Function to Reverse Linked List
+// 
+
+void reverse(struct list **lstart)
+{
+    struct list *prev = NULL;
+    struct list *next;
+
+    while ((*lstart)->next != NULL) {
+        next = (*lstart)->next;
+        (*lstart)->next = prev;
+        prev = (*lstart);
+        (*lstart) = next;
+    }
+    (*lstart)->next = prev;     // head has to be pointed to 2nd Last element
+}
 
 void create_circular_list(struct list *list)
 {
