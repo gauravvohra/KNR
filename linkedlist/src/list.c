@@ -45,21 +45,18 @@ int main()
     return 0;
 }
 
-void create_recursive(struct list **fhead)
+void create_recursive(struct list **lhead)
 {
     char choice;
-
-    struct list **lhead = fhead ;
+    static struct list *fhead = NULL ;
 
     if (!(*lhead)) {
         *lhead = malloc(sizeof(struct list *));
-        *fhead = *lhead;
         printf("Enter the first element \n");
         scanf("%d", &((*lhead)->data));
-
         printf(" Do you want to create more nodes (Y/N) \n");
         scanf("\n%c", &choice);
-
+	fhead = *lhead ;
         if (choice == 'Y' || choice == 'y') {
             create_recursive(lhead);
         } else if (choice == 'N' || choice == 'n') {
@@ -67,23 +64,19 @@ void create_recursive(struct list **fhead)
         }
     } else {
         printf("Creating more node \n");
-        printf("lhead %u lhead->data %d \n", *lhead, (*lhead)->data);
         (*lhead)->next = malloc(sizeof(struct list *));
-        *(lhead) = (*lhead)->next;
+        *lhead = (*lhead)->next;
         printf("Enter the element \n");
         scanf("%d", &((*lhead)->data));
-        printf("lhead %u lhead->data %d \n", *lhead, (*lhead)->data);
         printf(" Do you want to create more nodes (Y/N) \n");
         scanf("\n%c", &choice);
         if (choice == 'Y' || choice == 'y') {
             create_recursive(lhead);
         } else if (choice == 'N' || choice == 'n') {
             	(*lhead)->next = NULL;
-		*lhead = *fhead ;
-    		printf("Else if : fhead lhead %u lhead->data %d \n", *lhead, (*lhead)->data);
         }
     }
-    printf("lhead %u lhead->data %d \n", *lhead, (*lhead)->data);
+	*lhead = fhead ;
 }
 
 void display(struct list *lhead)
