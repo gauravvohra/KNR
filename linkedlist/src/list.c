@@ -9,16 +9,18 @@ int main()
 {
     struct list *start = NULL, *head = NULL;
     int choice;
-
+    int i = 0;
     while (1) {
 
-        printf("Enter the operation you want to perform. \n \ 
+        printf("#########################Enter the operation you want to perform.############################ \n \ 
 		1. Create Linked List recursively. \n \
 		2. Display Linked List. \n \
 		3. Reverse List. \n \
 		4. Create Circular List. \n \
 		5. Display Circular List. \n \
 		6. Recursive Reverse \n \
+		7. Rotate List. \n \
+		8. Detect and Removes Loop. \n \
 		0. Exit. \n");
 
         scanf("%d", &choice);
@@ -42,6 +44,12 @@ int main()
         case 6:
             reverse_recursive(start);
             display(temp);
+            break;
+        case 7:
+            rotate_list(&start);
+            break;
+        case 8:
+            detect_remove_loop(&start);
             break;
         default:
             return 0;
@@ -176,4 +184,99 @@ void reverse_recursive(struct list *lhead)
         printf("lhead->data %d \n", lhead->data);
         temp = lhead;
     }
+}
+
+//  Rotates list by N node Anti-Clockwise E.g 1->2->3->4->5 to 4->5->1->2->3 for N equal to 3
+
+void rotate_list(struct list **lhead)
+{
+    int n, i;
+    struct list *temp = *lhead;
+    struct list *prev = NULL;
+
+    i = n = 0;
+    printf("Rotating List \n");
+    printf("Enter the No.of Nodes to Rotate Anticlockwise \n");
+    scanf("%d", &n);
+
+    while (i < n) {
+        prev = temp;
+        temp = temp->next;
+        i++;
+    }
+    while (temp->next) {
+        temp = temp->next;
+    }
+    temp->next = *lhead;
+    *lhead = prev->next;
+    prev->next = NULL;
+
+}
+
+//  Detecting Loop and Removing after Detecting.
+
+void detect_remove_loop(struct list **lstart)
+{
+
+    printf("Detecting and Removing a Loop \n");
+
+    struct list *slow_ptr = *lstart;
+    struct list *fast_ptr = *lstart;
+    struct list *temp = NULL;
+
+    temp = *lstart;
+
+    while (temp->next) {
+        temp = temp->next;
+    }
+
+    temp->next = ((*lstart)->next)->next;       // Creates a Loop
+
+    printf("Detecting Loop \n");
+
+    while (slow_ptr && fast_ptr && fast_ptr->next) {
+        slow_ptr = slow_ptr->next;
+        fast_ptr = (fast_ptr->next)->next;
+
+        if (slow_ptr == fast_ptr) {
+            printf(" Loop Detected .Now Removing \n");
+            remove_loop(lstart, fast_ptr);
+        }
+    }
+}
+
+void remove_loop(struct list **head, struct list *loop_node)
+{
+
+    struct list *ptr1 = NULL;
+    struct list *ptr2 = NULL;
+
+    /* Set a pointer to the beging of the Linked List and
+     *       move it one by one to find the first node which is
+     *             part of the Linked List */
+    ptr1 = *head;
+    while (1) {
+        /* Now start a pointer from loop_node and check if it ever
+         *        reaches ptr2 */
+        ptr2 = loop_node;
+        while (ptr2->next != loop_node && ptr2->next != ptr1) {
+            ptr2 = ptr2->next;
+        }
+
+        /* If ptr2 reahced ptr1 then there is a loop. So break the
+         *         loop */
+        if (ptr2->next == ptr1) {
+
+            printf(" Loop Detected  at ptr1->data.%d Now Removing \n",
+                   ptr1->data);
+            break;
+        }
+        /* If ptr2 did't reach ptr1 then try the next node after ptr1 */
+        else
+            ptr1 = ptr1->next;
+    }
+
+    /* After the end of loop ptr2 is the last node of the loop. So
+     *      make next of ptr2 as NULL */
+    ptr2->next = NULL;
 }
