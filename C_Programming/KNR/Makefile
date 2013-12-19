@@ -1,4 +1,4 @@
-NUMBERS = 10
+NUMBERS = 4 6 7 8 9 10
 
 all:
 	$(foreach var,$(NUMBERS),gcc -Wall -o bin/2/$(var) src/2/$(var).c -I inc/2/;)

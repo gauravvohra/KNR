@@ -18,8 +18,8 @@ int main()
 //	3. Name the socket, as agreed with the server:
 		
 	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = inet_addr("127.0.0.1");
-	address.sin_port = htons(9734);
+	address.sin_addr.s_addr = inet_addr("192.168.1.9");
+	address.sin_port = htons(5454);
 	len = sizeof(address);
 	 result = connect(sockfd, (struct sockaddr *)&address, len);
 	         if(result == -1) {
